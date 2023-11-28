@@ -5,11 +5,12 @@ require('dotenv').config()
 const {json, urlencoded} = require('body-parser')
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://127.0.0.1:27017/exercisetracker')
+mongoose.connect(process.env.MY_DB || 'mongodb://127.0.0.1:27017/exercisetracker')
 .then(()=>{ console.log('DB is connected!!')})
 .catch(err=> {throw err})
 
 app.use(cors())
+
 // parse incoming data
 app.use(json()) 
 app.use(urlencoded({ extended: false }))
