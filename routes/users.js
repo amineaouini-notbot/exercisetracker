@@ -1,6 +1,7 @@
 let express = require('express')
 let router = express.Router();
 let Users = require('../models/usersModel');
+const usersModel = require('../models/usersModel');
 
 
 router.post('/', async (req, res)=>{
@@ -18,6 +19,15 @@ router.post('/', async (req, res)=>{
     }
     res.json(response)
     
+})
+
+router.get('/', async (req, res) =>{
+    try{
+
+        let allUsers = await usersModel.find()
+        res.json(allUsers)
+        
+    } catch(err){ res.send(err) }
 })
 
 module.exports = router;
