@@ -12,7 +12,11 @@ router.post('/', async (req, res)=>{
     } catch(err){
         res.json(err)
     }
-    res.json(newUser)
+    let response = {
+        username,
+        _id: newUser._id
+    }
+    res.json(response)
     
 })
 
