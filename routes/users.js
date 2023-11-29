@@ -1,8 +1,6 @@
 let express = require('express')
 let router = express.Router();
 let Users = require('../models/usersModel');
-const usersModel = require('../models/usersModel');
-
 
 router.post('/', async (req, res)=>{
     let {username} = req.body;
@@ -24,9 +22,9 @@ router.post('/', async (req, res)=>{
 router.get('/', async (req, res) =>{
     try{
 
-        let allUsers = await usersModel.find()
+        let allUsers = await Users.find()
         res.json(allUsers)
-        
+
     } catch(err){ res.send(err) }
 })
 

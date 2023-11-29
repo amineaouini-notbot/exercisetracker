@@ -6,9 +6,10 @@ const Users = require('../models/usersModel')
 router.post('/:_id/exercises', async (req, res) => {
     let { _id } = req.params
     let {description, duration, date} = req.body;
-    date = new Date(date)
+    console.log(_id,req.body)
+    date = new Date(date) || new Date()
     try {
-        let newExercise = new Exercises({description, duration, date: date ? date : new Date()})
+        let newExercise = new Exercises({description, duration, date})
         await newExercise.save()
         let user = await Users.findByIdAndUpdate(_id, {$push: newExercise._id})
         let { username } = user;
