@@ -6,8 +6,9 @@ const Users = require('../models/usersModel')
 router.post('/:_id/exercises', async (req, res) => {
     let { _id } = req.params
     let {description, duration, date} = req.body;
-    console.log(_id,req.body)
-    date = new Date(date) || new Date()
+    dateSetup = new Date(date)
+    date =  dateSetup.toString() === 'Invalid Date' ? new Date() : dateSetup
+    console.log(date)
     try {
         let newExercise = new Exercises({description, duration, date})
         await newExercise.save()
