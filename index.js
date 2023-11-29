@@ -21,9 +21,10 @@ app.get('/', (req, res) => {
 });
 
 const usersRouter = require('./routes/users')
+const exercisesRouter = require('./routes/exercises')
 
 app.use('/api/users', usersRouter)
-
+app.use('/api/users', exercisesRouter)
 
 const listener = app.listen(3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
