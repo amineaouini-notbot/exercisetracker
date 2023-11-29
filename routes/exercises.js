@@ -8,10 +8,10 @@ router.post('/:_id/exercises', async (req, res) => {
     let {description, duration, date} = req.body;
     duration = Number(duration)
     dateSetup = new Date(date) 
-
     date =  dateSetup.toString() === 'Invalid Date' ?
-        new Date().toDateString() :
-        dateSetup.toDateString()
+    new Date().toDateString() :
+    dateSetup.toDateString()
+    console.log(date)
     
     try {
         let newExercise = new Exercises({description, duration, date})
@@ -33,7 +33,7 @@ router.get('/:_id/logs', (req, res) =>{
     .then(user => {
         let {username, exercises} = user;
 
-        Exercises.find({_id: exercises}).select('description duration date')
+        Exercises.find({_id: exercises}).select('-_id -__v').exec()
         .then(log =>{
             let response = {
                 _id, username, count: log.length, log
