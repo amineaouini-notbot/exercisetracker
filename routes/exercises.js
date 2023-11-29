@@ -32,9 +32,9 @@ router.get('/:_id/logs', (req, res) =>{
         let {username, exercises} = user;
 
         Exercises.find({_id: exercises}).select('description duration date')
-        .then(logs =>{
+        .then(log =>{
             let response = {
-                _id, username,count, logs 
+                _id, username,count, log 
             }
             res.json(response);
             
