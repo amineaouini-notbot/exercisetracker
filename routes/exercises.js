@@ -6,6 +6,7 @@ const Users = require('../models/usersModel')
 router.post('/:_id/exercises', async (req, res) => {
     let { _id } = req.params
     let {description, duration, date} = req.body;
+    duration = Number(duration)
     dateSetup = new Date(date)
     date =  dateSetup.toString() === 'Invalid Date' ?
         new Date().toDateString() :
@@ -28,13 +29,12 @@ router.get('/:_id/logs', (req, res) =>{
     let {_id} = req.params;
     Users.findOne({_id})
     .then(user => {
-        let count = user.exercises.length
         let {username, exercises} = user;
 
         Exercises.find({_id: exercises}).select('description duration date')
         .then(log =>{
             let response = {
-                _id, username,count, log 
+                _id, username, count: log.length, log
             }
             res.json(response);
             
