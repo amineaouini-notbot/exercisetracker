@@ -32,12 +32,12 @@ router.get('/:_id/logs', (req, res) =>{
     Users.findOne({_id})
     .then(user => {
         let {username, exercises} = user;
-        
+
         let dateFilter = {}
         if (to || from){
             dateFilter.date = {}
             if(from) {dateFilter.date['$gte'] = new Date(from)}
-            if(to) { dateFilter.date['$lt'] = new Date(to)}
+            if(to) { dateFilter.date['$lte'] = new Date(to)}
         }
         
         Exercises.find({_id: exercises}).select('-_id -__v').where(dateFilter).limit(Number(limit)).exec()
