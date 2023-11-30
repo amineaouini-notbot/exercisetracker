@@ -29,12 +29,18 @@ router.post('/:_id/exercises', async (req, res) => {
 router.get('/:_id/logs', (req, res) =>{
     let {_id} = req.params;
     let {limit, from, to} = req.query;
-    limit = Number(limit)
     Users.findOne({_id})
     .then(user => {
         let {username, exercises} = user;
-
-        Exercises.find({_id: exercises}).select('-_id -__v').limit(limit).exec()
+        
+        let dateFilter = {}
+        if (to || from){
+            dateFilter.date = {}
+            if(from) {dateFilter.date['$gte'] = new Date(from)}
+            if(to) { dateFilter.date['$lt'] = new Date(to)}
+        }
+        
+        Exercises.find({_id: exercises}).select('-_id -__v').where(dateFilter).limit(Number(limit)).exec()
         .then(log =>{
             let response = {
                 _id, username, count: log.length, log
