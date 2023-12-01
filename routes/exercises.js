@@ -7,10 +7,7 @@ router.post('/:_id/exercises', async (req, res) => {
     let { _id } = req.params
     let {description, duration, date} = req.body;
     duration = Number(duration)
-    notvalid = new Date(date) === 'Invalid Date'
-    date = notvalid ?
-    new Date().toDateString() :
-    new Date(date).toDateString()
+    date = new Date(date).toString() === 'Invalid Date' ? new Date() : new Date(date)
     
     try {
         let newExercise = new Exercises({description, duration, date})
