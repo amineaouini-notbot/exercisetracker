@@ -5,7 +5,8 @@ require('dotenv').config()
 const {json, urlencoded} = require('body-parser')
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.MY_DB || 'mongodb://127.0.0.1:27017/exercisetracker')
+const MY_DB = process.env.MY_DB
+mongoose.connect('mongodb://127.0.0.1:27017/exercisetracker')
 .then(()=>{ console.log('DB is connected!!')})
 .catch(err=> {throw err})
 

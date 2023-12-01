@@ -7,10 +7,10 @@ router.post('/:_id/exercises', async (req, res) => {
     let { _id } = req.params
     let {description, duration, date} = req.body;
     duration = Number(duration)
-    dateSetup = new Date(date) 
-    date =  dateSetup.toString() === 'Invalid Date' ?
+    notvalid = new Date(date) === 'Invalid Date'
+    date = notvalid ?
     new Date().toDateString() :
-    dateSetup.toDateString()
+    new Date(date).toDateString()
     
     try {
         let newExercise = new Exercises({description, duration, date})
@@ -33,17 +33,24 @@ router.get('/:_id/logs', (req, res) =>{
     .then(user => {
         let {username, exercises} = user;
 
-        let dateFilter = {}
-        if (to || from){
-            dateFilter.date = {}
-            if(from) {dateFilter.date['$gte'] = new Date(from)}
-            if(to) { dateFilter.date['$lte'] = new Date(to)}
+        let moreFilter = {}
+        
+        if(to || from){
+            moreFilter.date = {}
+            if(from){ moreFilter.date.$gte = new Date(from)}
+            if(to){ moreFilter.date.$lt = new Date(to)}
         }
         
-        Exercises.find({_id: exercises}).select('-_id -__v').where(dateFilter).limit(Number(limit)).exec()
+        Exercises.find({_id: exercises, ...moreFilter})
+        .select('-_id -__v').limit(Number(limit))
         .then(log =>{
             let response = {
-                _id, username, count: log.length, log
+                _id, username, count: log.length,
+                log: log.map(exer => {
+                    let {duration, description} = exer
+                    return {date: new Date(exer.date).toDateString(), description, duration }
+                })
+            
             }
             res.json(response);
             
