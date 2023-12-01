@@ -16,7 +16,7 @@ router.post('/:_id/exercises', async (req, res) => {
         let { username } = user;
         
         let response = {
-            _id, username, date, duration, description
+            _id, username, date: date.toDateString(), duration, description
         }
         res.json(response)
         
